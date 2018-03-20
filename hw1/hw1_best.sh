@@ -1,0 +1,1 @@
+python3 cookie.py $1 $2

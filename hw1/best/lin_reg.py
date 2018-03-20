@@ -59,7 +59,7 @@ def output(w_lin , testX):
 	testX = np.mat(testX)
 	'''
 	out = testX * w_lin
-	outtable = [["id,value"]]
+	outtable = [['id','value']]
 
 	
 	for i in range(len(out)):

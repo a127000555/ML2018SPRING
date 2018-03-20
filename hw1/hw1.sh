@@ -1,0 +1,1 @@
+python3 submit_normal.py $1 $2

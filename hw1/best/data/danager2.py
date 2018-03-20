@@ -54,7 +54,7 @@ def test_preprocess():
 		for fa in ['PM2.5' , 'PM10']:
 			pm = list(map(float,day[fa]))
 			for idx in range(len(pm)):
-				if float(pm[idx]) < 5  or float(pm[idx]) > 100:
+				if float(pm[idx]) < 2  or float(pm[idx]) > 120:
 					if idx != 0 and idx != len(pm)-1:
 						print(idx)
 						pm[idx] = (pm[idx-1]+pm[idx+1])/2
@@ -107,9 +107,9 @@ def generate():
 					row = timeline[idx][1:]
 					np_row = np.array(row[left:left+time_range]).astype('float32')
 					if factor == 'PM2.5' or factor == 'PM10':
-						if len(np_row[np_row<5]):
+						if len(np_row[np_row<2]):
 							raise Error()
-						if len(np_row[np_row>100]):
+						if len(np_row[np_row>120]):
 							raise Error()
 						#print(np_row)
 					elif factor == 'CO':
