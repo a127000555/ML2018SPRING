@@ -1,0 +1,23 @@
+﻿Homework 1 Report - PM2.5 Prediction
+學號：b05902127  系級：資工二  姓名：劉俊緯
+
+
+1. (1%) 請分別使用每筆data9小時內所有feature的一次項（含bias項）以及每筆data9小時內PM2.5的一次項（含bias項）進行training，比較並討論這兩種模型的root mean-square error（根據kaggle上的public/private score）。
+
+2. (2%) 請分別使用至少四種不同數值的learning rate進行training（其他參數需一致），作圖並且討論其收斂過程。
+
+由這四種learning rate我們可以知道：learning rate太大太小其實沒有一定的相關性，因為lr太大可能會跳到另外一個波，而我們無法得知現在的lr叫做大還是小。
+在這張圖我們可以看出來，lr = 8e-5和 4e-5做的差不多好，至於lr太大(1.125e-4)初期收斂較慢，可能是一直跳到山谷另一端，而lr太小(1e-5)看起來應該就是走太慢，慢慢滾到minima，所以相較其他lr收斂的較慢。(y軸是log_2{RMSE(train)})
+
+3. (1%) 請分別使用至少四種不同數值的regulization parameter λ進行training（其他參數需一至），討論其root mean-square error（根據kaggle上的public/private score）。
+
+4. (1%) 請這次作業你的best_hw1.sh是如何實作的？（e.g. 有無對Data做任何Preprocessing？Features的選用有無任何考量？訓練相關參數的選用有無任何依據？）
+Feature engineering: 透過比較factor之間的相關係數，得知PM10和CO與PM2.5的相關係數相較之下高(0.8/0.6)
+Feature extracting: 使用九小時的PM2.5 / PM10的值。CO因為加上去沒有顯著效果，所以不用了QQ。
+Traning data preprocessing: 我們知道training data的每個月前二十天是連在一起的。於是我們就相接起來，並取連續十小時作為training data的X,Y。
+Training data cleaning: 當PM2.5/PM10的值不介於(0,120]之間時，當作此data有問題，不採用並扣除。
+Testing data correcting: 當PM2.5/PM10的值不介於(0,120]之間時，當作此data有問題，利用前後interpolation取代。如果是在頭或尾，則以最靠近的兩項取mean。
+Training data cleaning 2: 當PM2.5/PM10的值在連續時間下預測的y過於奇怪(當(min(x)  -5 > y 或 max(x) + 5 < y) 且 y和x[-2]與x[-1]的垂直距離>3時 )，當作這筆data有問題，也會被扣除掉。
+No bias: 我認為以PM2.5預測PM2.5本身不該有bias。有bias的情形應該在於平均不同的變數才會需要，因此我拔掉了bias。實際就算加上bias，算出來的值也會很小。
+Linear regression formula: 其實linear regression根本就有公式，為pseudo inverse(trainX) * trainY. 因此直接套公式可以省去不少時間。除非要做非線性函數再來搞Gradient Descent吧。
+透過以上的工程，在public得到的結果為6.14715，我覺得看起來還行啦。
