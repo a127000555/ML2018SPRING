@@ -1,14 +1,29 @@
 import pandas
 import math
 import numpy as np
+
+
+import sys
+
+# file name #
+train_X_name = 'train_X'
+train_Y_name = 'train_Y'
+test_X_name = 'test_X'
+test_Y_name = 'test_Y'
+if len(sys.argv) != 2:
+	train_X_name = sys.argv[3]
+	train_Y_name = sys.argv[4]
+	test_X_name = sys.argv[5]
+	test_Y_name = sys.argv[6]
+
 # Const
 sigmoid = lambda s : 1.0 / (1.0 + np.exp(-s))
 np.random.seed(777)	
 # Hyper Parameters.
 lr = 1e-4
-df1 = pandas.read_csv('train_X')
-df2 = pandas.read_csv('test_X')
-trainY = np.array([row for row in open('train_Y','r')]).astype(np.float).reshape(-1,1)
+df1 = pandas.read_csv(train_X_name)
+df2 = pandas.read_csv(test_X_name)
+trainY = np.array([row for row in open(train_Y_name,'r')]).astype(np.float).reshape(-1,1)
 
 filter_map = ['sex_Female' ]
 A1_augment_filter = ['age'  , 'fnlwgt', 'capital_gain' , 'capital_loss' , 'hours_per_week']
@@ -33,7 +48,7 @@ for feature in df1.columns.values:
 trainX = np.array(df1)
 testX = np.array(df2)
 for feature in df1.columns.values:
-	for times in  np.arange(0.5,21.5,2):
+	for times in  np.arange(2,50,2):
 		if feature in A1_augment_filter:
 			trainX = np.concatenate( [trainX , (np.array(df1[feature])**times).reshape(-1,1)] , axis=1)
 			testX = np.concatenate( [testX , (np.array(df2[feature])**times).reshape(-1,1)] , axis=1)
@@ -51,31 +66,10 @@ trainX = (trainX - Xmean) / Xstd
 testX = (testX - Xmean) / Xstd
 trainX = np.concatenate( (trainX,np.ones([trainX.shape[0],1])),axis=1)
 testX = np.concatenate( (testX,np.ones([testX.shape[0],1])),axis=1)
-from sklearn.linear_model import LogisticRegression
-from sklearn.svm import SVC
-clf = LogisticRegression(fit_intercept=True, C = 1e15)
-#clf=SVC()
-
-clf.fit(trainX,trainY)
-print(clf.score(trainX,trainY))
-
-
-out = clf.predict(testX)
-fout = open('sklearn_log_ans.csv','w')
-
-print('id,label' , file=fout)
-_ = 0
-for res in out:
-	print("%d,%d"%(_+1 , res) , file=fout)
-	_+=1
-print('finished')
-
 
 def cal(x,w):
 	return sigmoid(np.dot(x , w))
 w = np.zeros([trainX.shape[1]])
-
-
 
 lr= 1e-1
 
@@ -86,14 +80,14 @@ def gradient_descent(X,Y,w):
 	return w_grad
 
 
-for epoch in range(20000):
+for epoch in range(3000):
 	w = w -  lr*gradient_descent(trainX, trainY , w)
 	if epoch % 100 == 99:
 		print('epoch' , epoch , ':', 1- np.count_nonzero(trainY.reshape(-1) - (cal(trainX,w)>0.5).astype(int))/len(trainX))
 		#print(np.linalg.norm(w))
 		#print(w)
 out = (cal(testX,w)>0.5).tolist()
-fout = open('log_ans.csv','w')
+fout = open(test_Y_name,'w')
 print('id,label' , file=fout)
 for _,res in zip(range(len(out)),out):
 	print("%d,%d"%(_+1 , res) , file=fout)
