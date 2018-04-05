@@ -2,14 +2,28 @@ import pandas
 import math
 import numpy as np
 
+
+import sys
+
+# file name #
+train_X_name = 'train_X'
+train_Y_name = 'train_Y'
+test_X_name = 'test_X'
+test_Y_name = 'test_Y'
+if len(sys.argv) != 1:
+	train_X_name = sys.argv[3]
+	train_Y_name = sys.argv[4]
+	test_X_name = sys.argv[5]
+	test_Y_name = sys.argv[6]
+
 # Const
 sigmoid = lambda s : 1.0 / (1.0 + np.exp(-s))
 np.random.seed(777)	
 # Hyper Parameters.
 lr = 1e-4
-df1 = pandas.read_csv('train_X')
-df2 = pandas.read_csv('test_X')
-trainY = np.array([row for row in open('train_Y','r')]).astype(np.float).reshape(-1,1)
+df1 = pandas.read_csv(train_X_name)
+df2 = pandas.read_csv(test_X_name)
+trainY = np.array([row for row in open(train_Y_name,'r')]).astype(np.float).reshape(-1,1)
 
 A1_augment_filter = ['age','capital_gain','capital_loss' , 'hours_per_week']
 
@@ -53,7 +67,7 @@ for feature in df1.columns.values:
 		for times in  np.arange(2,5,1.2):
 			trainX = np.concatenate( [trainX , (np.power(np.array(df1[feature]),times)).reshape(-1,1)] , axis=1)
 			testX = np.concatenate( [testX , (np.power(np.array(df2[feature]),times)).reshape(-1,1)] , axis=1)
-print(trainX.shape)
+
 ## append bias 
 X = np.concatenate([trainX,testX],axis=0)
 Xmean = np.mean(X,axis=0)
@@ -66,16 +80,12 @@ testX = np.concatenate( (testX,np.ones([testX.shape[0],1])),axis=1)
 
 
 from sklearn.linear_model import LogisticRegression
-clf = LogisticRegression(penalty = 'l1' , fit_intercept=True , C =6500 )
-
-print('fitting')
-clf.fit(trainX,trainY)
-print(clf.score(trainX,trainY))
-out = clf.predict(testX)
 import pickle
-s = pickle.dump(clf,open('best_model','wb'))
 
-fout = open('sklearn_log_ans_OAO.csv','w')
+clf = pickle.load(open('best_model','rb'))
+out = clf.predict(testX)
+
+fout = open(test_Y_name,'w')
 print('id,label' , file=fout)
 _ = 0
 for res in out:

@@ -29,6 +29,20 @@ for feature in A1_augment_filter:
 
 interesting_testing_data = np.array(interesting_testing_data)
 interesting_training_data = np.array(interesting_training_data)
+
+quad_test = []
+quad_train= []
+for i in range(4):
+	for j in range(4):
+		for k in range(2,100,4):
+			quad_train.append(np.power(interesting_training_data[i] * interesting_training_data[j],k))
+			quad_test.append(np.power(interesting_testing_data[i] * interesting_testing_data[j],k))
+quad_test = np.array(quad_test).T
+quad_train = np.array(quad_train).T
+trainX = np.concatenate( [trainX , quad_train] , axis=1)
+testX = np.concatenate( [testX , quad_test] , axis=1)
+		
+print('quad finished')
 for feature in df1.columns.values:
 	if feature == 'age' or feature == 'hours_per_week':
 		trainX = np.concatenate( [trainX , (np.sinh(np.array(df1[feature]))).reshape(-1,1)] , axis=1)
@@ -37,7 +51,7 @@ for feature in df1.columns.values:
 		testX = np.concatenate( [testX , (G(np.array(df2[feature]))).reshape(-1,1)] , axis=1)
 		#trainX = np.concatenate( [trainX , (inv_G(np.array(df1[feature]))).reshape(-1,1)] , axis=1)
 		#testX = np.concatenate( [testX , (inv_G(np.array(df2[feature]))).reshape(-1,1)] , axis=1)
-	for times in  np.arange(2,100,3):
+	for times in  np.arange(2,200,4):
 
 		if feature in A1_augment_filter:
 			trainX = np.concatenate( [trainX , (np.power(np.array(df1[feature]),times)).reshape(-1,1)] , axis=1)
@@ -73,7 +87,7 @@ clf.fit(trainX,trainY)
 print(clf.score(trainX,trainY))
 out = clf.predict(testX)
 import pickle
-s = pickle.dump(clf,open('best_model','wb'))
+s = pickle.dump(clf,open('best_model_QAO','wb'))
 
 fout = open('sklearn_log_ans_OAO.csv','w')
 print('id,label' , file=fout)
