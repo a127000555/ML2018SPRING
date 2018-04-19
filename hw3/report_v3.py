@@ -1,4 +1,4 @@
-from sklearn.model_selection import train_test_split
+#from sklearn.model_selection import train_test_split
 import numpy as np
 import keras
 import sys
@@ -32,7 +32,12 @@ label = np.array(label).astype(np.float)
 
 image = (image - np.mean(image,0)) / np.std(image,0)
 validation_split = 0.2
-train_X, test_X, train_Y, test_Y = train_test_split(image, label, test_size=validation_split, random_state=7122)
+#train_X, test_X, train_Y, test_Y = train_test_split(image, label, test_size=validation_split, random_state=7122)
+
+train_X = image
+test_X = image
+train_Y = label
+test_Y = label
 
 ### MACRO ###
 def activation():
