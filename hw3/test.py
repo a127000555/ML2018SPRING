@@ -1,15 +1,49 @@
 from keras.models import load_model
 from keras.models import Model
 import numpy as np
-image = np.load('trainX.npy').reshape(-1,48,48,1)
-label = np.load('trainY.npy')
-model = load_model('super_resnet_model.hdf5')
-print(model.summary())
-training_res = model.evaluate(image,label)
-print('training loss: %g , acc: %g'%(training_res[0] , training_res[1]) )
-output = model.predict(np.load('testX.npy').reshape(-1,48,48,1))
+import csv
+import sys
 
-fout = open('ans.csv','w')
+
+trainfile = 'train.csv'
+testfile  = 'test.csv'
+outfile = 'output.csv'
+if len(sys.argv) > 1:
+	trainfile = sys.argv[1]
+	testfile = sys.argv[2]
+	outfile = sys.argv[3]
+ 
+train = [ row for row in csv.reader(open(trainfile,'r'))][1:]
+test =  [ row for row in csv.reader(open(testfile,'r'))][1:]
+
+image = []
+label = []
+test_image = []
+for row in train:
+	l = np.zeros((7))
+	l[int(row[0])] = 1
+	image.append(row[1].split())
+	label.append(l)
+for row in test:
+	test_image.append(row[1].split())
+	#exit()
+
+image = np.array(image).astype(np.float).reshape(-1,48,48,1)
+label = np.array(label).astype(np.float)
+test = np.array(test_image).astype(np.float).reshape(-1,48,48,1)
+print(test.shape)
+
+model = load_model('MA.h5')
+print(model.summary())
+
+
+mean = np.mean(image.reshape(-1,48,48,1),axis=0)
+std = np.std(image.reshape(-1,48,48,1),axis=0)
+print(mean.shape , std.shape , test.shape)
+test = (test - mean) / std
+output = model.predict(test , verbose=1)
+
+fout = open(outfile,'w')
 
 fout.write("id,label\n")
 _ = 0
