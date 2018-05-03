@@ -22,7 +22,9 @@ U , s , V = np.linalg.svd(X - X_mean , full_matrices=False)
 
 target_idx = int(sys.argv[2][:-4])
 
-target = data[target_idx].reshape(-1) - X_mean.reshape(-1)
+target_image = np.array(io.imread( sys.argv[1] + '/' + sys.argv[2]))
+	
+target = target_image.reshape(-1) - X_mean.reshape(-1)
 
 dot_value = np.dot(target,U[:,:4])
 print((dot_value*U[:,:4]).shape)
