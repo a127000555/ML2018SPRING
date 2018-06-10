@@ -1,4 +1,3 @@
-from model import model
 import keras
 from keras import initializers
 from keras.layers import *
