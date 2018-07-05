@@ -24,9 +24,7 @@ python train4.py
 python train5.py
 python train6.py
 python train7.py
-```
 
-```
 # 生成內積值
 python score4.py
 python score5.py
