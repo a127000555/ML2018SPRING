@@ -21,9 +21,22 @@ python data.py
 
 # training
 python train4.py
+python train5.py
+python train6.py
+python train7.py
+```
 
-# testing
-python predict4.py > out.csv
+```
+# 生成內積值
+python score4.py
+python score5.py
+python score6.py
+python score7.py
+
+# 生成 csv 檔，供底下 blending 使用
+python blend3.py > outb3.csv
+python blend467.py > outb467.csv
+
 ```
 
 * ```cd in "simple bow"```.
