@@ -47,13 +47,7 @@ optimizer 用 Adam，learning rate 從 5e-4 線性下降到 0，訓練 300 個 e
 
 ![](https://i.imgur.com/ysZ4nlv.png)
 
-$m_t = (W_{hm} h_{t-1} + b_{hm})(W_{im} x_t + b_{im})$
-$i_t = \sigma(W_{ii} x_t + b_{ii} + W_{mi} m_t + b_{mi})$
-$f_t = \sigma(W_{if} x_t + b_{if} + W_{mf} m_t + b_{mf})$
-$g_t = \tanh(W_{ig} x_t + b_{ig} + W_{mg} m_t + b_{mg})$
-$o_t = \sigma(W_{io} x_t + b_{io} + W_{mo} m_t + b_{mo})$
-$c_t = f_t c_{t-1} + i_t g_t$
-$h_t = o_t \tanh(c_t)$
+$m_t = (W_{hm} h_{t-1} + b_{hm})(W_{im} x_t + b_{im})\\i_t = \sigma(W_{ii} x_t + b_{ii} + W_{mi} m_t + b_{mi})\\f_t = \sigma(W_{if} x_t + b_{if} + W_{mf} m_t + b_{mf})\\g_t = \tanh(W_{ig} x_t + b_{ig} + W_{mg} m_t + b_{mg})\\o_t = \sigma(W_{io} x_t + b_{io} + W_{mo} m_t + b_{mo})\\c_t = f_t c_{t-1} + i_t g_t\\h_t = o_t \tanh(c_t)$
 
 
 ### BOW Model
