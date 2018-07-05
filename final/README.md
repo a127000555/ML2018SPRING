@@ -38,6 +38,8 @@ python blend3.py > outb3.csv
 python blend467.py > outb467.csv
 
 ```
+* `train5.py` `score5.py`  用到的 `W.pt` `W_test.pt` 取自 [fasttext 的 pretrained vectors](https://github.com/facebookresearch/fastText/blob/master/pretrained-vectors.md)，因爲原檔案太大，只附上有用到的部分。
+
 
 * ```cd in "simple bow"```.
 ```bash
