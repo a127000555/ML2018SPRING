@@ -19,7 +19,7 @@ README
 # 斷詞、word2vec
 python data.py
 
-# training
+# training（reproduce 請跳過這步）
 python train4.py
 python train5.py
 python train6.py
