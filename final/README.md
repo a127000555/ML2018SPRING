@@ -16,7 +16,7 @@ README
 ```bash
 # 把所有 data 放到同個資料夾下
 
-# 斷詞、word2vec
+# 斷詞、word2vec（reproduce 請跳過這步）
 python data.py
 
 # training（reproduce 請跳過這步）
