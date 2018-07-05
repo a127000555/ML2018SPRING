@@ -68,17 +68,17 @@ optimizer 用 Adamax。
 （訓練時內積換成 `sum -> Dot -> Dense(1,sigmoid)`）
 
 #### encoder
-| Layer              | Params            |
-| ------------------ | ----------------- |
-| word embedding     | 64d               |
-| Dense              | 1024              |
-| Dropout            | 0.2               |
-| LeakyReLU          | 0.1               |
-| BatchNormalization | \<keras default\> |
-| Dense              | 4096              |
-| Dropout            | 0.3               |
-| LeakyReLU          | 0.1               |
-| BatchNormalization | \<keras default\> |
+|Layer|Params|
+|-|-|
+|word embedding|64d|
+|Dense|1024|
+|Dropout|0.2|
+|LeakyReLU|0.1|
+|BatchNormalization|\<keras default\>|
+|Dense|4096|
+|Dropout|0.3|
+|LeakyReLU|0.1|
+|BatchNormalization|\<keras default\>|
 
 ### double encoder Model
 #### pretrain
@@ -99,13 +99,13 @@ optimizer 用 Adam。
 訓練 20 個 epoch。
 
 #### encoder
-| Layer             | Params |
-| ----------------- | ------ |
-| word embedding    | 300d   |
-| Bidirectional GRU | 128    |
-| Dropout           | 0.2    |
-| Bidirectional GRU | 64     |
-| Dropout           | 0.2    |
+|Layer|Params|
+|-|-|
+|word embedding|300d|
+|Bidirectional GRU|128|
+|Dropout|0.2|
+|Bidirectional GRU|64|
+|Dropout|0.2|
 
 ## Experiment and Discussion (6%)
 以下的正確率，皆以 public/private 形式表示。
@@ -117,16 +117,14 @@ optimizer 用 Adam。
 若刪除選項中的引號，可以刪除那些像是歌詞的選項，進而增加正確率，實驗模型為上述的 double encoder model。
 
 ### mLSTM 與 LSTM 的比較
-* LSTM: $0.54071\  /\  0.52885$
+* LSTM: $0.55335\  /\  0.53675$
 * mLSTM: $0.55652\  /\  0.54545$
 
 使用由原本 LSTM 修改而來的 mLSTM ，發現跟 LSTM 相差並沒有很多。
 
 ### word embedding 維度的比較
 * 100d: $0.38418\  /\  0.37667$
-* 150d: $0.42055\  /\  0.43201$
 * 200d: $0.42569\  /\  0.42252$
-* 250d: $0.48063\  /\  0.48221$
 * 300d: $0.51264\  /\  0.50671$
 
 在做 word embedding 時，維度跟結果會有很明顯的相關，因此我們也做了跟 embedding 維度有關的實驗。實驗用的 model 為上述的 double encoder model。由結果可以發現維度越大越好，至於維度再繼續增加的情形因為訓練時間會過長的緣故，就沒有繼續嘗試。
@@ -206,3 +204,4 @@ https://arxiv.org/pdf/1502.03167.pdf
 
 Weight Normalization: A Simple Reparameterization to Accelerate Training of Deep Neural Networks
 https://arxiv.org/pdf/1602.07868.pdf
+
