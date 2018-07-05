@@ -49,6 +49,8 @@ python3 predict.py
 python3 voting.py
 '''
 將前一個的作法所產生的兩種不同的model產出的csv檔，和"sim3.csv"寫在voting.py的第一行，
-執行的時候會產生出"ans3.csv"，這個是最後的結果。
+執行的時候會產生出"ans3.csv"，這個是最後的結果cat model_pieces* > "simple.hdf5"
+
 '''
 ```
+* Use trained model: please cd in this directory and `cat model_pieces* > "simple.hdf5"`
